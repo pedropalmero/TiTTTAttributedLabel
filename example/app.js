@@ -34,45 +34,20 @@ var createSeparator = function() {
 var TiTTTAttributedLabel = require('com.codingpie.titttattributedlabel');
 Ti.API.info("module is => " + TiTTTAttributedLabel);
 
-var text = "Los sistemas computacionales, generalmente implementados como dispositivos electrónicos, permiten el procesamiento automático de la información. Conforme a ello, los sistemas informáticos deben realizar las siguientes tres tareas básicas: Entrada: captación de la información. Normalmente son datos y órdenes ingresados por los usuarios a través de cualquier dispositivo de entrada conectado al ordenador. Proceso: tratamiento de la información. Se realiza a través de programas y aplicaciones diseñadas por programadores que indican de forma secuencial cómo resolver un requerimiento. Salida: transmisión de resultados. A través de los dispositivos de salida los usuarios pueden visualizar los resultados que surgen del procesamiento de los datos.";
-text += " http://www.elmundo.es 91-0025125 910025125 calle Alcala 1, 28001, Madrid";
+var text = "Examples:\n";
+text += "Link: http://www.github.com\n";
+text += "Phone: 91-0025125 910025125\n";
+text += "Address: 1 Infinite Loop, Cupertino, CA 95014";
 
 var label = TiTTTAttributedLabel.createLabel({
-   text: "Lorem ipsum dolor amet (1)",
-   width: Ti.UI.FILL,
-   height: "20dp",
-   textCheckingTypes: TiTTTAttributedLabel.CHECKING_TYPE_LINK
-});
-
-scrollView.add(label);
-scrollView.add(createSeparator());
-
-var labelAuto = TiTTTAttributedLabel.createLabel({
    text: text,
    width: Ti.UI.FILL,
    height: Ti.UI.SIZE,
    textCheckingTypes: TiTTTAttributedLabel.CHECKING_TYPE_LINK|TiTTTAttributedLabel.CHECKING_TYPE_ADDRESS|TiTTTAttributedLabel.CHECKING_TYPE_PHONE_NUMBER
 });
 
-scrollView.add(labelAuto);
-scrollView.add(createSeparator());
-
-var labelAuto = TiTTTAttributedLabel.createLabel({
-   text: text,
-   width: Ti.UI.FILL,
-   height: Ti.UI.SIZE 
-});
-
-scrollView.add(labelAuto);
-scrollView.add(createSeparator());
-
-var label = TiTTTAttributedLabel.createLabel({
-   text: "Lorem ipsum dolor amet (3)",
-   width: Ti.UI.FILL,
-   height: "20dp"
-});
-
 scrollView.add(label);
+scrollView.add(createSeparator());
 
 win.open();
 
