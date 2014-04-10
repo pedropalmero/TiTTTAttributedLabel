@@ -23,18 +23,18 @@
 
 /* Begin PBXBuildFile section */
 		24DD6CF91134B3F500162E58 /* ComCodingpieTitttattributedlabelModule.h in Headers */ = {isa = PBXBuildFile; fileRef = 24DD6CF71134B3F500162E58 /* ComCodingpieTitttattributedlabelModule.h */; };
-		24DD6CFA1134B3F500162E58 /* ComCodingpieTitttattributedlabelModule.m in Sources */ = {isa = PBXBuildFile; fileRef = 24DD6CF81134B3F500162E58 /* ComCodingpieTitttattributedlabelModule.m */; };
+		24DD6CFA1134B3F500162E58 /* ComCodingpieTitttattributedlabelModule.m in Sources */ = {isa = PBXBuildFile; fileRef = 24DD6CF81134B3F500162E58 /* ComCodingpieTitttattributedlabelModule.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		24DE9E1111C5FE74003F90F6 /* ComCodingpieTitttattributedlabelModuleAssets.h in Headers */ = {isa = PBXBuildFile; fileRef = 24DE9E0F11C5FE74003F90F6 /* ComCodingpieTitttattributedlabelModuleAssets.h */; };
-		24DE9E1211C5FE74003F90F6 /* ComCodingpieTitttattributedlabelModuleAssets.m in Sources */ = {isa = PBXBuildFile; fileRef = 24DE9E1011C5FE74003F90F6 /* ComCodingpieTitttattributedlabelModuleAssets.m */; };
+		24DE9E1211C5FE74003F90F6 /* ComCodingpieTitttattributedlabelModuleAssets.m in Sources */ = {isa = PBXBuildFile; fileRef = 24DE9E1011C5FE74003F90F6 /* ComCodingpieTitttattributedlabelModuleAssets.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		AA747D9F0F9514B9006C5449 /* ComCodingpieTitttattributedlabel_Prefix.pch in Headers */ = {isa = PBXBuildFile; fileRef = AA747D9E0F9514B9006C5449 /* ComCodingpieTitttattributedlabel_Prefix.pch */; };
 		AACBBE4A0F95108600F1A2B1 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AACBBE490F95108600F1A2B1 /* Foundation.framework */; };
 		EB25AB62186A0A280042078B /* MapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EB25AB61186A0A280042078B /* MapKit.framework */; };
 		EB25AB64186A0A2E0042078B /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EB25AB63186A0A2E0042078B /* CoreGraphics.framework */; };
 		EB25AB66186A0A320042078B /* CoreText.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EB25AB65186A0A320042078B /* CoreText.framework */; };
 		EB25AB69186A0AF90042078B /* ComCodingpieTitttattributedlabelLabelProxy.h in Headers */ = {isa = PBXBuildFile; fileRef = EB25AB67186A0AF90042078B /* ComCodingpieTitttattributedlabelLabelProxy.h */; };
-		EB25AB6A186A0AF90042078B /* ComCodingpieTitttattributedlabelLabelProxy.m in Sources */ = {isa = PBXBuildFile; fileRef = EB25AB68186A0AF90042078B /* ComCodingpieTitttattributedlabelLabelProxy.m */; };
+		EB25AB6A186A0AF90042078B /* ComCodingpieTitttattributedlabelLabelProxy.m in Sources */ = {isa = PBXBuildFile; fileRef = EB25AB68186A0AF90042078B /* ComCodingpieTitttattributedlabelLabelProxy.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		EB25AB6D186A0B0A0042078B /* ComCodingpieTitttattributedlabelLabel.h in Headers */ = {isa = PBXBuildFile; fileRef = EB25AB6B186A0B0A0042078B /* ComCodingpieTitttattributedlabelLabel.h */; };
-		EB25AB6E186A0B0A0042078B /* ComCodingpieTitttattributedlabelLabel.m in Sources */ = {isa = PBXBuildFile; fileRef = EB25AB6C186A0B0A0042078B /* ComCodingpieTitttattributedlabelLabel.m */; };
+		EB25AB6E186A0B0A0042078B /* ComCodingpieTitttattributedlabelLabel.m in Sources */ = {isa = PBXBuildFile; fileRef = EB25AB6C186A0B0A0042078B /* ComCodingpieTitttattributedlabelLabel.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		EB25AB73186A0BA50042078B /* TTTAttributedLabel.h in Headers */ = {isa = PBXBuildFile; fileRef = EB25AB71186A0BA50042078B /* TTTAttributedLabel.h */; };
 		EB25AB74186A0BA50042078B /* TTTAttributedLabel.m in Sources */ = {isa = PBXBuildFile; fileRef = EB25AB72186A0BA50042078B /* TTTAttributedLabel.m */; };
 /* End PBXBuildFile section */
@@ -264,6 +264,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 24DD6D1B1134B66800162E58 /* titanium.xcconfig */;
 			buildSettings = {
+				CLANG_ENABLE_OBJC_ARC = YES;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				DSTROOT = /tmp/ComCodingpieTitttattributedlabel.dst;
@@ -303,6 +304,7 @@
 			baseConfigurationReference = 24DD6D1B1134B66800162E58 /* titanium.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ENABLE_OBJC_ARC = YES;
 				DSTROOT = /tmp/ComCodingpieTitttattributedlabel.dst;
 				GCC_C_LANGUAGE_STANDARD = c99;
 				GCC_MODEL_TUNING = G5;
