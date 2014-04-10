@@ -40,7 +40,9 @@ USE_VIEW_FOR_CONTENT_WIDTH
                                            attributes:@{NSFontAttributeName:font}
                                               context:nil];
         size = textRect.size;
-        size.height += [[TiUtils fontValue:[self valueForKey:@"font"]] size];
+        
+        float fontSize = [[TiUtils fontValue:[self valueForKey:@"font"]] size];
+        size.height += fontSize * ceil((size.height / fontSize) / 20); // TODO every 20 lines we add one more to fix the height
     } else {
         size = [value sizeWithFont:font constrainedToSize:maxSize lineBreakMode:UILineBreakModeTailTruncation];
     }
