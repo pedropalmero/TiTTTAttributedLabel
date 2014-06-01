@@ -219,12 +219,14 @@
 {
 	UIColor * newColor = [[TiUtils colorValue:color] _color];
 	[[self label] setTextColor:(newColor != nil)?newColor:[UIColor darkTextColor]];
+    [[self label] setText:[[self label] text]];
 }
 
 -(void)setHighlightedColor_:(id)color
 {
 	UIColor * newColor = [[TiUtils colorValue:color] _color];
 	[[self label] setHighlightedTextColor:(newColor != nil)?newColor:[UIColor lightTextColor]];
+    [[self label] setText:[[self label] text]];
 }
 
 -(void)setFont_:(id)font
@@ -314,6 +316,8 @@
 		color = [TiUtils colorValue:color];
 		[[self label] setShadowColor:[color _color]];
 	}
+    
+    [[self label] setText:[[self label] text]];
 }
 
 -(void)setShadowOffset_:(id)value
@@ -321,6 +325,8 @@
 	CGPoint p = [TiUtils pointValue:value];
 	CGSize size = {p.x,p.y};
 	[[self label] setShadowOffset:size];
+    
+    [[self label] setText:[[self label] text]];
 }
 
 -(void)setTextCheckingTypes_:(id)args

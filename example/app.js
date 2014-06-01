@@ -43,6 +43,7 @@ var label = TiTTTAttributedLabel.createLabel({
    text: text,
    width: Ti.UI.FILL,
    height: Ti.UI.SIZE,
+   color: "#30ad9e",
    textCheckingTypes: TiTTTAttributedLabel.CHECKING_TYPE_LINK|TiTTTAttributedLabel.CHECKING_TYPE_ADDRESS|TiTTTAttributedLabel.CHECKING_TYPE_PHONE_NUMBER
 });
 
