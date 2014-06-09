@@ -153,11 +153,20 @@
         label.numberOfLines = 0;
         label.lineBreakMode = NSLineBreakByWordWrapping;
         label.delegate = self;
-        
+
         [self addSubview:label];
         //        self.clipsToBounds = YES;
 	}
 	return label;
+}
+
+- (void)reloadLabelText
+{
+    if (self.hasHTML) {
+        self.label.attributedText = self.label.attributedText;
+    } else {
+        self.label.text = self.label.text;
+    }
 }
 
 - (id)accessibilityElement
@@ -211,22 +220,42 @@
 -(void)setText_:(id)text
 {
 	[[self label] setText:[TiUtils stringValue:text]];
+    
     [self padLabel];
 	[(TiViewProxy *)[self proxy] contentsWillChange];
+}
+
+-(void)setHtml_:(id)html
+{
+    if ([NSAttributedString instancesRespondToSelector:@selector(initWithData:options:documentAttributes:error:)]) {
+        NSString *htmlString = [TiUtils stringValue:html];
+        self.hasHTML = YES;
+        
+        NSAttributedString *attributedString = [[NSAttributedString alloc] initWithData:[htmlString dataUsingEncoding:NSUTF8StringEncoding] options:@{NSDocumentTypeDocumentAttribute:NSHTMLTextDocumentType} documentAttributes:nil error:nil];
+        
+        [[self label] setText:attributedString];
+        
+        [self padLabel];
+        [(TiViewProxy *)[self proxy] contentsWillChange];
+    } else {
+        NSLog(@"[ERROR] You can not set html in versions lower than iOS 7");
+    }
 }
 
 -(void)setColor_:(id)color
 {
 	UIColor * newColor = [[TiUtils colorValue:color] _color];
 	[[self label] setTextColor:(newColor != nil)?newColor:[UIColor darkTextColor]];
-    [[self label] setText:[[self label] text]];
+    
+    [self reloadLabelText];
 }
 
 -(void)setHighlightedColor_:(id)color
 {
 	UIColor * newColor = [[TiUtils colorValue:color] _color];
 	[[self label] setHighlightedTextColor:(newColor != nil)?newColor:[UIColor lightTextColor]];
-    [[self label] setText:[[self label] text]];
+    
+    [self reloadLabelText];
 }
 
 -(void)setFont_:(id)font
@@ -248,7 +277,6 @@
         [[self label] setAdjustsFontSizeToFitWidth:YES];
         [[self label] setMinimumFontSize:newSize];
     }
-    
 }
 
 -(CALayer *)backgroundImageLayer
@@ -317,7 +345,7 @@
 		[[self label] setShadowColor:[color _color]];
 	}
     
-    [[self label] setText:[[self label] text]];
+    [self reloadLabelText];
 }
 
 -(void)setShadowOffset_:(id)value
@@ -326,7 +354,7 @@
 	CGSize size = {p.x,p.y};
 	[[self label] setShadowOffset:size];
     
-    [[self label] setText:[[self label] text]];
+    [self reloadLabelText];
 }
 
 -(void)setTextCheckingTypes_:(id)args
@@ -335,10 +363,7 @@
     
     self.label.enabledTextCheckingTypes = checkingTypes;
     
-    // we have to reset the text again so that checking types have effect
-    if (self.label.text) {
-        self.label.text = self.label.text;
-    }
+    [self reloadLabelText];
 }
 
 #pragma mark - TTTAttributedLabelDelegate

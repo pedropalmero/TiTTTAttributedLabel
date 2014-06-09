@@ -19,5 +19,8 @@
 }
 
 @property(nonatomic,getter=isHighlighted) BOOL     highlighted;
+@property(nonatomic, assign) BOOL hasHTML;
+
+- (TTTAttributedLabel *)label;
 
 @end

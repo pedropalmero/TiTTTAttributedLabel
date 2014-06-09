@@ -50,5 +50,19 @@ var label = TiTTTAttributedLabel.createLabel({
 scrollView.add(label);
 scrollView.add(createSeparator());
 
+// html string
+var html = '<h1>Title</h1><p><strong><i>Bold and italic</i></strong><br /><a href=\"http://www.apple.com\">Apple</a></p><span style="text-decoration:underline">Underline</span><p>Address: 1 Infinite Loop, Cupertino, CA 95014, Link: http://www.github.com</p>';
+    
+var label = TiTTTAttributedLabel.createLabel({
+   html: html,
+   width: Ti.UI.FILL,
+   height: Ti.UI.SIZE,
+   color: "#30ad9e",
+   textCheckingTypes: TiTTTAttributedLabel.CHECKING_TYPE_LINK|TiTTTAttributedLabel.CHECKING_TYPE_ADDRESS|TiTTTAttributedLabel.CHECKING_TYPE_PHONE_NUMBER
+});
+
+scrollView.add(label);
+scrollView.add(createSeparator());
+
 win.open();
 

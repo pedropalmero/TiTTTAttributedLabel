@@ -6,6 +6,7 @@
  */
 
 #import "ComCodingpieTitttattributedlabelLabelProxy.h"
+#import "ComCodingpieTitttattributedlabelLabel.h"
 #import "TiUtils.h"
 
 @implementation ComCodingpieTitttattributedlabelLabelProxy
@@ -19,35 +20,46 @@ USE_VIEW_FOR_CONTENT_WIDTH
 
 -(CGFloat)contentHeightForWidth:(CGFloat)suggestedWidth
 {
-	NSString *value = [TiUtils stringValue:[self valueForKey:@"text"]];
-	id fontValue = [self valueForKey:@"font"];
-	UIFont *font = nil;
-	if (fontValue!=nil)
-	{
-		font = [[TiUtils fontValue:[self valueForKey:@"font"]] font];
-	}
-	else
-	{
-		font = [UIFont systemFontOfSize:[UIFont labelFontSize]];
-	}
-	CGSize maxSize = CGSizeMake(suggestedWidth<=0 ? 480 : suggestedWidth, 10000);
+    CGSize maxSize = CGSizeMake(suggestedWidth<=0 ? 480 : suggestedWidth, 10000);
     
     CGSize size;
     
-    if ([value respondsToSelector:@selector(boundingRectWithSize:options:attributes:context:)]) {
-        CGRect textRect = [value boundingRectWithSize:maxSize
-                                              options:NSStringDrawingUsesLineFragmentOrigin|NSStringDrawingUsesFontLeading
-                                           attributes:@{NSFontAttributeName:font}
-                                              context:nil];
-        size = textRect.size;
+    ComCodingpieTitttattributedlabelLabel *viewLabel = (ComCodingpieTitttattributedlabelLabel *)[self view];
+    
+    if (viewLabel.hasHTML) {
+        NSAttributedString *attributedString = [viewLabel label].attributedText;
         
-        float fontSize = [[TiUtils fontValue:[self valueForKey:@"font"]] size];
-        size.height += fontSize * ceil((size.height / fontSize) / 20); // TODO every 20 lines we add one more to fix the height
+        CGRect rect = [attributedString boundingRectWithSize:maxSize options:NSStringDrawingUsesLineFragmentOrigin | NSStringDrawingUsesFontLeading context:nil];
+        
+        size = rect.size;
     } else {
-        size = [value sizeWithFont:font constrainedToSize:maxSize lineBreakMode:UILineBreakModeTailTruncation];
+        NSString *value = [TiUtils stringValue:[self valueForKey:@"text"]];
+        id fontValue = [self valueForKey:@"font"];
+        UIFont *font = nil;
+        if (fontValue!=nil)
+        {
+            font = [[TiUtils fontValue:[self valueForKey:@"font"]] font];
+        }
+        else
+        {
+            font = [UIFont systemFontOfSize:[UIFont labelFontSize]];
+        }
+        
+        if ([value respondsToSelector:@selector(boundingRectWithSize:options:attributes:context:)]) {
+            CGRect textRect = [value boundingRectWithSize:maxSize
+                                                  options:NSStringDrawingUsesLineFragmentOrigin|NSStringDrawingUsesFontLeading
+                                               attributes:@{NSFontAttributeName:font}
+                                                  context:nil];
+            size = textRect.size;
+            
+            float fontSize = [[TiUtils fontValue:[self valueForKey:@"font"]] size];
+            size.height += fontSize * ceil((size.height / fontSize) / 20); // TODO every 20 lines we add one more to fix the height
+        } else {
+            size = [value sizeWithFont:font constrainedToSize:maxSize lineBreakMode:UILineBreakModeTailTruncation];
+        }
     }
     
-	return [self verifyHeight:size.height]; //Todo: We need to verifyHeight elsewhere as well.
+    return [self verifyHeight:size.height]; //Todo: We need to verifyHeight elsewhere as well.
 }
 
 -(CGFloat) verifyWidth:(CGFloat)suggestedWidth
