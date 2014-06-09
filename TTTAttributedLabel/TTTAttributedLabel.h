@@ -1,17 +1,17 @@
 // TTTAttributedLabel.h
 //
 // Copyright (c) 2011 Mattt Thompson (http://mattt.me)
-// 
+//
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
 // in the Software without restriction, including without limitation the rights
 // to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
 // copies of the Software, and to permit persons to whom the Software is
 // furnished to do so, subject to the following conditions:
-// 
+//
 // The above copyright notice and this permission notice shall be included in
 // all copies or substantial portions of the Software.
-// 
+//
 // THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
 // IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
 // FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
@@ -26,11 +26,11 @@
 /**
  Vertical alignment for text in a label whose bounds are larger than its text bounds
  */
-typedef enum {
+typedef NS_ENUM(NSInteger, TTTAttributedLabelVerticalAlignment) {
     TTTAttributedLabelVerticalAlignmentCenter   = 0,
     TTTAttributedLabelVerticalAlignmentTop      = 1,
     TTTAttributedLabelVerticalAlignmentBottom   = 2,
-} TTTAttributedLabelVerticalAlignment;
+};
 
 /**
  Determines whether the text to which this attribute applies has a strikeout drawn through itself.
@@ -87,6 +87,8 @@ extern NSString * const kTTTBackgroundCornerRadiusAttributeName;
  `TTTAttributedLabel`, like `UILabel`, conforms to `NSCoding`. However, if the build target is set to less than iOS 6.0, `linkAttributes` and `activeLinkAttributes` will not be encoded or decoded. This is due to an runtime exception thrown when attempting to copy non-object CoreText values in dictionaries.
  
  @warning Any properties changed on the label after setting the text will not be reflected until a subsequent call to `setText:` or `setText:afterInheritingLabelAttributesAndConfiguringWithBlock:`. This is to say, order of operations matters in this case. For example, if the label text color is originally black when the text is set, changing the text color to red will have no effect on the display of the label until the text is set once again.
+ 
+ @bug Setting `attributedText` directly is not recommended, as it may cause a crash when attempting to access any links previously set. Instead, call `setText:`, passing an `NSAttributedString`.
  */
 @interface TTTAttributedLabel : UILabel <TTTAttributedLabel, UIGestureRecognizerDelegate>
 
@@ -112,7 +114,7 @@ extern NSString * const kTTTBackgroundCornerRadiusAttributeName;
 
 /**
  A bitmask of `NSTextCheckingType` which are used to automatically detect links in the label text.
-
+ 
  @warning You must specify `enabledTextCheckingTypes` before setting the `text`, with either `setText:` or `setText:afterInheritingLabelAttributesAndConfiguringWithBlock:`.
  */
 @property (nonatomic, assign) NSTextCheckingTypes enabledTextCheckingTypes;
@@ -130,45 +132,70 @@ extern NSString * const kTTTBackgroundCornerRadiusAttributeName;
 @property (nonatomic, strong) NSDictionary *linkAttributes;
 
 /**
- A dictionary containing the `NSAttributedString` attributes to be applied to links when they are in the active state. Supply `nil` or an empty dictionary to opt out of active link styling. The default active link style is red and underlined.
+ A dictionary containing the `NSAttributedString` attributes to be applied to links when they are in the active state. If `nil` or an empty `NSDictionary`, active links will not be styled. The default active link style is red and underlined.
  */
 @property (nonatomic, strong) NSDictionary *activeLinkAttributes;
+
+/**
+ A dictionary containing the `NSAttributedString` attributes to be applied to links when they are in the inactive state, which is triggered a change in `tintColor` in iOS 7. If `nil` or an empty `NSDictionary`, inactive links will not be styled. The default inactive link style is gray and unadorned.
+ */
+@property (nonatomic, strong) NSDictionary *inactiveLinkAttributes;
 
 ///---------------------------------------
 /// @name Acccessing Text Style Attributes
 ///---------------------------------------
 
 /**
- The shadow blur radius for the label. A value of 0 indicates no blur, while larger values produce correspondingly larger blurring. This value must not be negative. The default value is 0. 
+ The shadow blur radius for the label. A value of 0 indicates no blur, while larger values produce correspondingly larger blurring. This value must not be negative. The default value is 0.
  */
 @property (nonatomic, assign) CGFloat shadowRadius;
 
-/** 
+/**
  The shadow blur radius for the label when the label's `highlighted` property is `YES`. A value of 0 indicates no blur, while larger values produce correspondingly larger blurring. This value must not be negative. The default value is 0.
  */
 @property (nonatomic, assign) CGFloat highlightedShadowRadius;
-/** 
+/**
  The shadow offset for the label when the label's `highlighted` property is `YES`. A size of {0, 0} indicates no offset, with positive values extending down and to the right. The default size is {0, 0}.
  */
 @property (nonatomic, assign) CGSize highlightedShadowOffset;
-/** 
+/**
  The shadow color for the label when the label's `highlighted` property is `YES`. The default value is `nil` (no shadow color).
  */
 @property (nonatomic, strong) UIColor *highlightedShadowColor;
+
+/**
+ The amount to kern the next character. Default is standard kerning. If this attribute is set to 0.0, no kerning is done at all.
+ */
+@property (nonatomic, assign) CGFloat kern;
 
 ///--------------------------------------------
 /// @name Acccessing Paragraph Style Attributes
 ///--------------------------------------------
 
 /**
- The distance, in points, from the leading margin of a frame to the beginning of the paragraph's first line. This value is always nonnegative, and is 0.0 by default. 
+ The distance, in points, from the leading margin of a frame to the beginning of the paragraph's first line. This value is always nonnegative, and is 0.0 by default.
  */
 @property (nonatomic, assign) CGFloat firstLineIndent;
 
 /**
- The space in points added between lines within the paragraph. This value is always nonnegative and is 0.0 by default. 
+ @deprecated Use `lineSpacing` instead.
  */
-@property (nonatomic, assign) CGFloat leading;
+@property (nonatomic, assign) CGFloat leading DEPRECATED_ATTRIBUTE;
+
+/**
+ The space in points added between lines within the paragraph. This value is always nonnegative and is 0.0 by default.
+ */
+@property (nonatomic, assign) CGFloat lineSpacing;
+
+/**
+ The minimum line height within the paragraph. If the value is 0.0, the minimum line height is set to the line height of the `font`. 0.0 by default.
+ */
+@property (nonatomic, assign) CGFloat minimumLineHeight;
+
+/**
+ The maximum line height within the paragraph. If the value is 0.0, the maximum line height is set to the line height of the `font`. 0.0 by default.
+ */
+@property (nonatomic, assign) CGFloat maximumLineHeight;
 
 /**
  The line height multiple. This value is 1.0 by default.
@@ -178,7 +205,7 @@ extern NSString * const kTTTBackgroundCornerRadiusAttributeName;
 /**
  The distance, in points, from the margin to the text container. This value is `UIEdgeInsetsZero` by default.
  
- @discussion The `UIEdgeInset` members correspond to paragraph style properties rather than a particular geometry, and can change depending on the writing direction. 
+ @discussion The `UIEdgeInset` members correspond to paragraph style properties rather than a particular geometry, and can change depending on the writing direction.
  
  ## `UIEdgeInset` Member Correspondence With `CTParagraphStyleSpecifier` Values:
  
@@ -201,7 +228,7 @@ extern NSString * const kTTTBackgroundCornerRadiusAttributeName;
 
 /**
  The truncation token that appears at the end of the truncated line. `nil` by default.
-
+ 
  @discussion When truncation is enabled for the label, by setting `lineBreakMode` to either `UILineBreakModeHeadTruncation`, `UILineBreakModeTailTruncation`, or `UILineBreakModeMiddleTruncation`, the token used to terminate the truncated line will be `truncationTokenString` if defined, otherwise the Unicode Character 'HORIZONTAL ELLIPSIS' (U+2026).
  */
 @property (nonatomic, strong) NSString *truncationTokenString;
@@ -218,7 +245,7 @@ extern NSString * const kTTTBackgroundCornerRadiusAttributeName;
 
 /**
  Calculate and return the size that best fits an attributed string, given the specified constraints on size and number of lines.
-
+ 
  @param attributedString The attributed string.
  @param size The maximum dimensions used to calculate size.
  @param numberOfLines The maximum number of lines in the text to draw, if the constraining size cannot accomodate the full attributed string.
@@ -237,7 +264,7 @@ extern NSString * const kTTTBackgroundCornerRadiusAttributeName;
  Sets the text displayed by the label.
  
  @param text An `NSString` or `NSAttributedString` object to be displayed by the label. If the specified text is an `NSString`, the label will display the text like a `UILabel`, inheriting the text styles of the label. If the specified text is an `NSAttributedString`, the label text styles will be overridden by the styles specified in the attributed string.
-  
+ 
  @discussion This method overrides `UILabel -setText:` to accept both `NSString` and `NSAttributedString` objects. This string is `nil` by default.
  */
 - (void)setText:(id)text;
@@ -297,7 +324,7 @@ afterInheritingLabelAttributesAndConfiguringWithBlock:(NSMutableAttributedString
  @param addressComponents A dictionary of address components for the address to be linked to
  @param range The range in the label text of the link. The range must not exceed the bounds of the receiver.
  
- @discussion The address component dictionary keys are described in `NSTextCheckingResult`'s "Keys for Address Components." 
+ @discussion The address component dictionary keys are described in `NSTextCheckingResult`'s "Keys for Address Components."
  */
 - (void)addLinkToAddress:(NSDictionary *)addressComponents
                withRange:(NSRange)range;
@@ -335,7 +362,7 @@ afterInheritingLabelAttributesAndConfiguringWithBlock:(NSMutableAttributedString
 
 /**
  Adds a link to transit information for a specified range in the label text.
-
+ 
  @param components A dictionary containing the transit components. The currently supported keys are `NSTextCheckingAirlineKey` and `NSTextCheckingFlightKey`.
  @param range The range in the label text of the link. The range must not exceed the bounds of the receiver.
  */
@@ -405,7 +432,7 @@ didSelectLinkWithPhoneNumber:(NSString *)phoneNumber;
 
 /**
  Tells the delegate that the user did select a link to transit information
-
+ 
  @param label The label whose link was selected.
  @param components A dictionary containing the transit components. The currently supported keys are `NSTextCheckingAirlineKey` and `NSTextCheckingFlightKey`.
  */
