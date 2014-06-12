@@ -32,6 +32,9 @@ USE_VIEW_FOR_CONTENT_WIDTH
         CGRect rect = [attributedString boundingRectWithSize:maxSize options:NSStringDrawingUsesLineFragmentOrigin | NSStringDrawingUsesFontLeading context:nil];
         
         size = rect.size;
+        
+        float fontSize = [[TiUtils fontValue:[self valueForKey:@"font"]] size];
+        size.height += fontSize * ceil((size.height / fontSize) / 20); // TODO every 20 lines we add one more to fix the height
     } else {
         NSString *value = [TiUtils stringValue:[self valueForKey:@"text"]];
         id fontValue = [self valueForKey:@"font"];

@@ -47,15 +47,21 @@
     
     CGSize size;
     
-    if ([value respondsToSelector:@selector(boundingRectWithSize:options:attributes:context:)]) {
-        CGRect textRect = [value boundingRectWithSize:maxSize
-                                              options:NSStringDrawingUsesLineFragmentOrigin|NSStringDrawingUsesFontLeading
-                                           attributes:@{NSFontAttributeName:font}
-                                              context:nil];
-        size = textRect.size;
-        size.height += [[label font] pointSize];
+    if (self.hasHTML) {
+        CGRect rect = [self.label.attributedText boundingRectWithSize:maxSize options:NSStringDrawingUsesLineFragmentOrigin | NSStringDrawingUsesFontLeading context:nil];
+        
+        size = rect.size;
     } else {
-        size = [value sizeWithFont:font constrainedToSize:maxSize lineBreakMode:UILineBreakModeTailTruncation];
+        if ([value respondsToSelector:@selector(boundingRectWithSize:options:attributes:context:)]) {
+            CGRect textRect = [value boundingRectWithSize:maxSize
+                                                  options:NSStringDrawingUsesLineFragmentOrigin|NSStringDrawingUsesFontLeading
+                                               attributes:@{NSFontAttributeName:font}
+                                                  context:nil];
+            size = textRect.size;
+            size.height += [[label font] pointSize];
+        } else {
+            size = [value sizeWithFont:font constrainedToSize:maxSize lineBreakMode:UILineBreakModeTailTruncation];
+        }
     }
     
 	if (shadowOffset.width > 0)
@@ -140,6 +146,10 @@
 	initialLabelFrame = bounds;
     
     [self padLabel];
+    
+    if (self.hasHTML) {
+        [self.label sizeToFit];
+    }
     
     [super frameSizeChanged:frame bounds:bounds];
 }
@@ -235,7 +245,6 @@
         
         [[self label] setText:attributedString];
         
-        [self padLabel];
         [(TiViewProxy *)[self proxy] contentsWillChange];
     } else {
         NSLog(@"[ERROR] You can not set html in versions lower than iOS 7");
